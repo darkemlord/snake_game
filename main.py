@@ -9,9 +9,12 @@ WINDOW_WIDTH = 900
 WINDOW_HEIGHT = 600
 surface_display = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pg.display.set_caption("snake game")
+
 # Game speed
 FPS = 60
 clock = pg.time.Clock()
+
+# Charters Images
 
 # Main loop
 running = True
