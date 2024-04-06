@@ -1,4 +1,4 @@
-import pygame as pg
+import pygame as pg, random
 
 # Init Game
 pg.init()
@@ -11,7 +11,7 @@ surface_display = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pg.display.set_caption("~~Snake~~")
 
 # Game speed
-FPS = 60
+FPS = 40
 clock = pg.time.Clock()
 
 # Set game values
@@ -94,6 +94,15 @@ while running:
     head_x += snake_dx
     head_y += snake_dy
     head_cord = (head_x, head_y, SNAKE_SIZE, SNAKE_SIZE)
+
+    # Check for collisions
+    if head_rect.colliderect(apple_rect):
+        score += 1
+        pick_up_sound.play()
+
+        apple_x = random.randint(0, WINDOW_WIDTH - SNAKE_SIZE)
+        apple_y = random.randint(0, WINDOW_HEIGHT - SNAKE_SIZE)
+        apple_coord = (apple_x, apple_y, SNAKE_SIZE, SNAKE_SIZE)
 
     # Fill the surface
     surface_display.fill(WHITE)
