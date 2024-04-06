@@ -18,7 +18,7 @@ clock = pg.time.Clock()
 SNAKE_SIZE = 20
 
 head_x = WINDOW_HEIGHT // 2
-head_y = WINDOW_HEIGHT // 2
+head_y = WINDOW_HEIGHT // 2 + 100
 
 snake_dx = 0
 snake_dy = 0
@@ -38,9 +38,9 @@ WHITE = (255, 255, 255)
 font = pg.font.SysFont("gabriola", 48)
 
 # Set text
-title_text = font.render("~~Snake~~", True, GREEN, DARK_GREEN)
+title_text = font.render("~~Snake~~", True, GREEN, DARK_RED)
 title_rect = title_text.get_rect()
-title_rect.center(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
+title_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
 
 score_text = font.render("Score: " + str(score), True, GREEN, DARK_RED)
 score_rect = score_text.get_rect()
@@ -70,12 +70,46 @@ body_coord = []
 running = True
 
 while running:
+    # Check if the user wants to quit
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
 
-    # update Display
+        # Move the snake
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_LEFT:
+                snake_dx = -1 * SNAKE_SIZE
+                snake_dy = 0
+            if event.key == pg.K_RIGHT:
+                snake_dx = SNAKE_SIZE
+                snake_dy = 0
+            if event.key == pg.K_UP:
+                snake_dx = 0
+                snake_dy = -1 * SNAKE_SIZE
+            if event.key == pg.K_DOWN:
+                snake_dx = 0
+                snake_dy = SNAKE_SIZE
+
+    # Update x, y position of the snakes head and make a new coordinate
+    head_x += snake_dx
+    head_y += snake_dy
+    head_cord = (head_x, head_y, SNAKE_SIZE, SNAKE_SIZE)
+
+    # Fill the surface
+    surface_display.fill(WHITE)
+
+    # Blit the HUD
+    surface_display.blit(title_text, title_rect)
+    surface_display.blit(score_text, score_rect)
+
+    # Blit assets
+
+    head_rect = pg.draw.rect(surface_display, DARK_GREEN, head_cord)
+    apple_rect = pg.draw.rect(surface_display, RED, apple_coord)
+
+    # Update Display and tick clock
     pg.display.update()
+    clock.tick(FPS)
 
     clock.tick(FPS)
 # End Game
